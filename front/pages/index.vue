@@ -20,6 +20,11 @@
         todos: [],
       };
     },
+    computed: {
+      user() {
+        return this.$store.state.auth.currentUser;
+      }
+    },
     created() {
       console.log("API_KEY:", process.env.API_KEY);
     },
