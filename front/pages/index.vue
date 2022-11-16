@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="user">
     <AddTodo @submit="addTodo" />
-    <TodoList :todos="todos" />
+    <TodoList :todos="user.todos" />
   </div>
 </template>
 
@@ -29,11 +29,12 @@
       console.log("API_KEY:", process.env.API_KEY);
     },
     methods: {
-      async addTodo(title) {
-        await axios.post("/v1/todos", { title }); 
-        this.todos.push({
-          title
-        });
+      async addTodo(todo) {
+        const { data } = await axios.post("/v1/todos", { todo });
+        this.$store.dispatch("auth/setUser", {
+        ...this.user,
+        todos: [...this.user.todos, data]
+       });
       },
     },
   };
